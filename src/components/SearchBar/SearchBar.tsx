@@ -1,19 +1,16 @@
-import toast from "react-hot-toast";
-import styles from "./SearchBar.module.css";
+import toast from 'react-hot-toast';
+import styles from './SearchBar.module.css';
 interface SearchBarProps {
   onSubmit: (query: string) => void;
 }
 export default function SearchBar({ onSubmit }: SearchBarProps) {
   const handleSubmit = (formData: FormData) => {
-    const searchQuery = formData.get("query") as string;
-    console.log("Search Query:", searchQuery.length);
+    const searchQuery = formData.get('query') as string;
     if (searchQuery === undefined || searchQuery.length === 0) {
-      toast.error("Please enter your search query.");
+      toast.error('Please enter your search query.');
       return;
     } else {
       onSubmit(searchQuery);
-      // const photos = getPhotos({ query: searchQuery });
-      // console.log("Photos:", photos);
     }
   };
   return (

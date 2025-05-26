@@ -8,17 +8,29 @@ import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import MovieModal from '../MovieModal/MovieModal';
+import type { Movie } from '../../types/movie';
 
 export default function App() {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const openModal = (movie: Movie) => {
+    setSelectedMovie(movie);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedMovie(null);
+  };
+
   const handleSearchSubmit = (searchQuery: string) => {
     setQuery(searchQuery);
   };
 
-  console.log('Search submitted from App:', query);
   useEffect(() => {
     if (!query) {
       setMovies([]); // Убедитесь, что фильмы сброшены, если запрос пустой
@@ -37,7 +49,7 @@ export default function App() {
         } else {
           setMovies(response);
         }
-        console.log('Movies fetched:', response);
+
         setIsLoading(false); // Reset loading state
       })
       .catch((error) => {
@@ -46,20 +58,18 @@ export default function App() {
       })
       .finally(() => {
         setIsLoading(false); // Ensure loading state is reset even on error
-        console.log('Fetch completed, loading state reset.');
       });
   }, [query]);
-  console.log('Movies state updated:', movies);
+
   return (
     <>
       <SearchBar onSubmit={handleSearchSubmit} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      <MovieGrid
-        movies={movies}
-        onSelect={(movie) => console.log('Selected movie:', movie)}
-      />
-      <MovieModal />
+      <MovieGrid movies={movies} onSelect={openModal} />
+      {isModalOpen && selectedMovie && (
+        <MovieModal movie={selectedMovie} onClose={closeModal} />
+      )}
     </>
   );
 }
