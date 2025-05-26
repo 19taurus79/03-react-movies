@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import MovieModal from '../MovieModal/MovieModal';
 
 export default function App() {
   const [query, setQuery] = useState('');
@@ -54,7 +55,11 @@ export default function App() {
       <SearchBar onSubmit={handleSearchSubmit} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
-      <MovieGrid movies={movies} />
+      <MovieGrid
+        movies={movies}
+        onSelect={(movie) => console.log('Selected movie:', movie)}
+      />
+      <MovieModal />
     </>
   );
 }

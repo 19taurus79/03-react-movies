@@ -1,6 +1,6 @@
 import css from './MovieGrid.module.css';
-
-export default function MovieGrid({ onSelect, movies }) {
+import type{ Movie } from '../../types/movie';
+export default function MovieGrid({ onSelect, movies }:{ onSelect: (movie: Movie) => void; movies: Movie[] }) {
   return (
     <ul className={css.grid}>
       {movies.map((movie) => (
