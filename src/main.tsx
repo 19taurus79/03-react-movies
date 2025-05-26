@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./components/App/App.tsx";
 import "modern-normalize";
 import { Toaster } from "react-hot-toast";
-import SearchBar from "./components/SearchBar/SearchBar.tsx";
+// import SearchBar from "./components/SearchBar/SearchBar.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <App />
