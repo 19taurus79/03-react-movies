@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // import css from "./App.module.css";
 import SearchBar from '../SearchBar/SearchBar';
 import { fetchMovies } from '../../services/movieService';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import MovieGrid from '../MovieGrid/MovieGrid';
 import Loader from '../Loader/Loader';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -12,7 +12,7 @@ import type { Movie } from '../../types/movie';
 
 export default function App() {
   const [query, setQuery] = useState('');
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,11 +43,11 @@ export default function App() {
     setIsError(false); // Reset error state
     fetchMovies({ query })
       .then((response) => {
-        if (response.length === 0) {
+        if (response.results.length === 0) {
           toast.error('No movies found for your request.');
           return;
         } else {
-          setMovies(response);
+          setMovies(response.results);
         }
 
         setIsLoading(false); // Reset loading state
@@ -63,6 +63,7 @@ export default function App() {
 
   return (
     <>
+      <Toaster />
       <SearchBar onSubmit={handleSearchSubmit} />
       {isLoading && <Loader />}
       {isError && <ErrorMessage />}
